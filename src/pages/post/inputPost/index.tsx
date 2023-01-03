@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Component, useEffect, useState } from "react";
 import {
   Button,
   Cell,
@@ -8,7 +8,15 @@ import {
 import Taro from "@tarojs/taro";
 import "./index.less";
 
+type PlateType = 'help' | 'askForHelp';
+
 const InputPost = () => {
+  const [plateType, setPlateType] = useState<PlateType>('help');
+  useEffect(() => {
+   const $instance = Taro.getCurrentInstance();
+   console.log($instance?.router?.params);
+   setPlateType($instance?.router?.params.plateType as any);
+  }, []);
   return (
     <div className="inputPostWrapper">
       <div className="inputPostWrapperInput">
@@ -24,7 +32,7 @@ const InputPost = () => {
       </div>
       <div className="inputPostFooter">
         <Button onClick={() => { Taro.navigateBack(); }} className="inputPostCancel">取消</Button>
-        <Button className="inputPostPublish" type="primary">发布</Button>
+        <Button className="inputPostPublish" type="primary">发布{plateType === 'askForHelp' ? '求助' : '帮助'}</Button>
       </div>
     </div>
   )

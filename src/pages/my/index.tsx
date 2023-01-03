@@ -1,31 +1,52 @@
-import { Component } from "react";
+// import { useLocalStore, observer } from '@tarojs/mobx'
+import useLogin from '../../hooks/useLogin';
+
 import {
   Button,
-  Cell,
+  Avatar,
 } from "@nutui/nutui-react-taro";
 import "./index.less";
 
-class Index extends Component<PropsWithChildren> {
-  constructor(props: any) {
-    super(props);
+const My = () => {
+  const [userInfo, login] = useLogin();
+
+  /**
+   * @description: 获取用户信息
+   * @param {Object} detail onGetUserInfo 所返回的用户基本信息
+   * @return null
+   */
+  const getUserInfo = ({ detail }) => {
+    login(detail.userInfo);
   }
 
-  componentWillMount() { }
+  return (
+    <div className="myWrapper">
+      <div className="myHeader">
+        <div className="myHeaderInfo">
+          <Avatar size="large" url={userInfo?.avatarUrl} />
+          {
+            userInfo ? (
+              <span className='myHeaderNickName'>{userInfo?.nickName}</span>
+            ) : (
+              <Button
+                openType='getUserInfo'
+                onGetUserInfo={getUserInfo}
+                type="primary"
+                className='myHeaderLogin'
+              >
+                点击登录
+              </Button>
+            )
 
-  componentDidMount() { }
+          }
 
-  componentWillUnmount() { }
+        </div>
+      </div>
+      <div className="myInfoFoot">
 
-  componentDidShow() { }
-
-  componentDidHide() { }
-
-  render() {
-    return (
-      <Button type="primary" className="btn">
-        NutUI React Button My
-      </Button>
-    );
-  }
+      </div>
+    </div>
+  )
 }
-export default Index
+
+export default (My);

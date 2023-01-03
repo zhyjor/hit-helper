@@ -3,6 +3,7 @@
   "projectname": "hit-helper",
   "description": "",
   "appid": "wxb32a9599c10b1a97",
+  "cloudfunctionRoot": "cloudfunctions/",
   "setting": {
     "urlCheck": true,
     "es6": false,
@@ -27,5 +28,6 @@
   "editorSetting": {
     "tabIndent": "insertSpaces",
     "tabSize": 2
-  }
+  },
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/"
 }

@@ -5,7 +5,7 @@ const Plate = () => {
   return (
      <Grid gutter={3}>
         <GridItem icon="dongdong" text="求助" />
-        <GridItem icon="dongdong" text="我有资源" />
+        <GridItem icon="dongdong" text="帮助" />
     </Grid>
   )
 }

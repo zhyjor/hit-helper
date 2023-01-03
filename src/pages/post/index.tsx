@@ -12,12 +12,12 @@ const Post = () => {
     <div className="postWrapper">
       <div className="postContent">
         <div className="postItem">
-          <Avatar icon="addfollow" onActiveAvatar={() => { Taro.navigateTo({ url: '/pages/post/inputPost/index' }) }} size="large" bgColor="red" iconSize={16} color="#000" />
+          <Avatar icon="addfollow" onActiveAvatar={() => { Taro.navigateTo({ url: '/pages/post/inputPost/index?plateType=askForHelp' }) }} size="large" bgColor="red" iconSize={16} color="#000" />
           <span className="postItemTxt">求助</span>
         </div>
         <div className="postItem">
-          <Avatar icon="follow" onActiveAvatar={() => { Taro.navigateTo({ url: '/pages/post/inputPost/index' }) }} size="large" bgColor="rgb(253, 227, 207)" iconSize={16} color="#000" />
-          <span className="postItemTxt">我有资源</span>
+          <Avatar icon="follow" onActiveAvatar={() => { Taro.navigateTo({ url: '/pages/post/inputPost/index?plateType=help' }) }} size="large" bgColor="rgb(253, 227, 207)" iconSize={16} color="#000" />
+          <span className="postItemTxt">帮助</span>
         </div>
         <div></div>
       </div>

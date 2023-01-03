@@ -1,15 +1,18 @@
-import { Component } from 'react'
+import { useEffect } from 'react'
+import Taro from '@tarojs/taro'
+
 import './app.less'
 
-class App extends Component {
-  componentDidMount () {}
+const App = (props) => {
+  useEffect(() => {
+    Taro.cloud.init(
+      {
+        traceUser: true,
+        env: "hit-helper"
+      }
+    );
+  }, []);
 
-  componentDidShow () {}
-
-  componentDidHide () {}
-
-  render() {
-    return this.props.children
-  }
+  return props.children;
 }
 export default App
