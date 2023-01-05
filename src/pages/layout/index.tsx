@@ -11,7 +11,7 @@ import "./index.less";
 
 const Index = () => {
 
-  const [activeKey, setActiveKey] = useState<number>(2);
+  const [activeKey, setActiveKey] = useState<number>(0);
 
   return (
     <div className="layout-wrapper">

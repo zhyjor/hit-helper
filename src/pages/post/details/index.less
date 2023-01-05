@@ -1,0 +1,100 @@
+.postDetailsWrapper {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #eee;
+
+  .postDetailsContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+
+    .postDetailsContentTitle {
+      padding-bottom: 20px;
+      background: #fff;
+      padding: 0 10px;
+      font-size: 20px;
+      font-weight: 400;
+    }
+
+    .postDetailsContentAuthor {
+      display: flex;
+      flex-direction: row;
+      height: 50px;
+      background: #fff;
+      padding: 20px 10px;
+
+      .postDetailsContentAuthorAvatar {}
+
+      .postDetailsContentAuthorName {
+        display: flex;
+        flex: 1;
+        .postDetailsContentAuthorNameContent {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          height: 50px;
+          margin: 0 8px;
+
+          .postDetailsContentAuthorNameContentName {
+            font-size: 16px;
+
+          }
+
+          .postDetailsContentAuthorNameContentTime {
+            font-size: 14px;
+          }
+        }
+
+        .postDetailsContentAuthorNameCount {
+          display: flex;
+          height: 100%;
+          align-items: flex-end;
+        }
+
+      }
+      .postDetailsContentAuthorPlate {
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+      }
+    }
+    .postDetailsContentBody {
+      background: #fff;
+      padding: 0 10px 20px 10px;
+      font-size: 18px;
+      font-weight: 100;
+    }
+    .postDetailsContentComment {
+      margin-top: 10px;
+      background: #fff;
+      .postDetailsContentCommentDivider {
+        color: #ddd;
+        width: 60%;
+        padding-left: 20%;      }
+    }
+  }
+
+  .postDetailsHandler {
+    display: flex;
+    border-top: 1px solid #eee;
+    background: #fff;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    .postDetailsHandlerComment {
+      background: #eee;
+      height: 40px;
+      padding: 2px 10px;
+      margin: 10px 0;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      border-radius: 40px;
+    }
+    .postDetailsHandlerShare {
+      margin-left: 16px;
+    }
+  }
+}

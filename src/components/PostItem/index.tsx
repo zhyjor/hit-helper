@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React from "react";
 import {
   Button,
   Cell,
@@ -6,22 +6,32 @@ import {
   Divider,
   Icon,
 } from "@nutui/nutui-react-taro";
+import Taro from '@tarojs/taro'
+
 import "./index.less";
 
-const PostItem = () => {
+type IProps = {
+  data: Post.PostItem;
+}
+
+const PostItem: React.FC<IProps> = (props) => {
+  const { data } = props;
+  const onItemClick = () => {
+    Taro.navigateTo({ url: `/pages/post/details/index?id=${data._id}` })
+  }
   return (
-    <Cell>
+    <Cell onClick={onItemClick}>
       <div className="cmpPostItemWrapper">
         <div className="cmpPostItemWrapperTitleWrapper">
-          <span className="cmpPostItemWrapperTitle">帖子发布例子</span>
-          <Tag plain>精华</Tag>
+          <span className="cmpPostItemWrapperTitle">{data.subject}</span>
+          {data.isExtract && (<Tag plain>精华</Tag>)}
         </div>
         <div className="cmpPostItemWrapperFooterWrapper">
           <div className="cmpPostItemWrapperFooterLeft">
-            <span className="cmpPostItemWrapperFooterLeftPlate">求助</span>
+            <span className="cmpPostItemWrapperFooterLeftPlate">{data.plateTypeName}</span>
             <Divider direction="vertical" />
-            <span className="cmpPostItemWrapperFooterLeftAuthor">微信用户</span>
-            <span className="cmpPostItemWrapperFooterLeftGmtUpdate">2022.12.18 10:23</span>
+            <span className="cmpPostItemWrapperFooterLeftAuthor">{data.nickName}</span>
+            <span className="cmpPostItemWrapperFooterLeftGmtUpdate">{data.createTime}</span>
           </div>
           <div className="cmpPostItemWrapperFooterRight">
             <div className="cmpPostItemWrapperFooterReadCount">

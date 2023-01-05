@@ -7,6 +7,9 @@ const TcbRouter = require('tcb-router');
 const login = require('./controller/login');
 // 保存用户信息方法
 const saveUserInfo = require('./controller/saveUserInfo');
+const { postCreate, postList, postDetails } = require('./controller/post');
+const { commentCreate, commentList, commentDetails } = require('./controller/comment');
+
 // 日志中间件
 const log = require('./unit/log');
 cloud.init({
@@ -23,5 +26,13 @@ exports.main = async (event, context) => {
   app.router('login', login);
   // 保存用户信息
   app.router('saveUserInfo', saveUserInfo);
+  app.router('postCreate', postCreate);
+  app.router('postList', postList);
+  app.router('postDetails', postDetails);
+  app.router('commentCreate', commentCreate);
+  app.router('commentList', commentList);
+  app.router('commentDetails', commentDetails);
+
+  //
   return app.serve();
 };

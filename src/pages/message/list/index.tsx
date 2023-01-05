@@ -1,14 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { Infiniteloading, Cell } from '@nutui/nutui-react-taro';
+import Taro, { cloud } from "@tarojs/taro";
+
 import PostItem from "../../../components/PostItem";
 import './index.less';
 
 const App = () => {
   const [defultList, setDefultList] = useState<string[]>([])
-  const [hasMore, setHasMore] = useState(true)
+  const [hasMore, setHasMore] = useState(true);
+
+  const getPostList = async () => {
+    const data =  await cloud.callFunction({
+      name: 'router',
+      data: {
+        $url: 'postList',
+        // data: { subject, body }
+      }
+    });
+    console.log(data.result);
+  }
 
   useEffect(() => {
-    // init()
+    getPostList();
   }, [])
 
   const loadMore = (done: () => void) => {
@@ -24,13 +37,6 @@ const App = () => {
       }
       done()
     }, 500)
-  }
-
-  const init = () => {
-    for (let i = 0; i < 20; i++) {
-      defultList.push(`${i}`)
-    }
-    setDefultList([...defultList])
   }
 
   return (
