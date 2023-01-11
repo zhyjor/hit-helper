@@ -9,6 +9,7 @@ const App = (props) => {
       {
         traceUser: true,
         env: "hit-helper"
+        // env: "hit-helper-3g7q095q412bef1b"
       }
     );
   }, []);

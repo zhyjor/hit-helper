@@ -3,6 +3,7 @@ const cloud = require('wx-server-sdk');
 cloud.init({
   traceUser: true,
   env: "hit-helper-3g7q095q412bef1b"
+  // env: "hit-helper"
 });
 
 const db = cloud.database();
