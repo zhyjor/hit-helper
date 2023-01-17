@@ -8,8 +8,8 @@ const App = (props) => {
     Taro.cloud.init(
       {
         traceUser: true,
-        env: "hit-helper"
-        // env: "hit-helper-3g7q095q412bef1b"
+        // env: "hit-helper"
+        env: "hit-helper-3g7q095q412bef1b"
       }
     );
   }, []);

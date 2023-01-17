@@ -5,6 +5,7 @@ import {
   Button,
   Avatar,
 } from "@nutui/nutui-react-taro";
+import List from './list';
 import "./index.less";
 
 const My = () => {
@@ -43,7 +44,7 @@ const My = () => {
         </div>
       </div>
       <div className="myInfoFoot">
-
+        <List />
       </div>
     </div>
   )

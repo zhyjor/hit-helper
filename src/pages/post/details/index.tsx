@@ -71,6 +71,14 @@ const Details: React.FC<IProps> = (props) => {
         </div>
         <div
           className="postDetailsHandlerShare"
+          onClick={() => {
+            Taro.showShareMenu({
+              withShareTicket: true,
+              showShareItems: ['wechatFriends', 'wechatMoment'],
+              fail: (e) => { console.log(e) },
+              success: (e) => { console.log(e) }
+            })
+          }}
         >
           <TextIcon style={{ fontSize: 14, color: '#888' }} icon="share" />
         </div>
