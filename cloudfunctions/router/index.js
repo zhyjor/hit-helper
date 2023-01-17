@@ -14,8 +14,8 @@ const { commentCreate, commentList, commentDetails } = require('./controller/com
 const log = require('./unit/log');
 cloud.init({
   traceUser: true,
-  // env: "hit-helper-3g7q095q412bef1b"
-  env: "hit-helper"
+  env: "hit-helper-3g7q095q412bef1b"
+  // env: "hit-helper"
 });
 
 // 云函数入口函数
