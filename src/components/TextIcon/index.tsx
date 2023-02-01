@@ -6,19 +6,20 @@ import {
 import "./index.less";
 
 type IProps = {
-  icon: 'eye' | 'message' | 'share';
+  icon: 'eye' | 'message' | 'share-n' | 's-follow' | 'fabulous';
   text?: number | string;
   style?: React.CSSProperties;
   onClick?: (e?: any) => void;
+  active?: boolean;
 }
 
 const TextIcon: React.FC<IProps> = (props) => {
-  const { icon, text, style, onClick  } = props;
+  const { icon, text, style, onClick, active } = props;
   return (
     <div className="cmpCount" style={style} onClick={onClick}>
-      <Icon name={icon} />
+      <Icon name={icon} size={style?.fontSize} color={active ? '#fa2c19' : undefined} />
       {
-        text && <span>{text}</span>
+        text && <span className="cmpCountText" style={{ color: active ? '#fa2c19' : undefined }}>{text}</span>
       }
     </div>
   );

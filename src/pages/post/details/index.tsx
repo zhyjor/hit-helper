@@ -1,4 +1,4 @@
-import React, { Component, useCallback, useEffect, useState } from "react";
+import React, { Component, useCallback, useEffect, useMemo, useState } from "react";
 import useCloudFunction from "../../../hooks/useCloudFunction";
 import {
   Button,
@@ -7,9 +7,11 @@ import {
   Notify,
   Avatar,
 } from "@nutui/nutui-react-taro";
-import Taro from "@tarojs/taro";
+import Taro, { useDidShow } from "@tarojs/taro";
 import TextIcon from "../../../components/TextIcon";
 import CommentItem from "../../../components/CommentItem";
+import Handler from '../../../components/Handler';
+import Loading from "../../../components/Loading";
 
 import "./index.less";
 
@@ -20,8 +22,26 @@ const Details: React.FC<IProps> = (props) => {
   const $instance = Taro.getCurrentInstance();
   const id = $instance?.router?.params.id ?? 'c749a6be63b4f2d4000024384a467d9c';
 
-  const { error, data, loading } = useCloudFunction<Post.PostItem>({ name: 'router', path: 'postDetails', body: { id } });
-  const { error: listError, data: listData, loading: listLoading } = useCloudFunction<Comment.CommentItem[]>({ name: 'router', path: 'commentList', body: { postId: id } });
+  const [handlerLoading, setHandlerLoading] = useState(false);
+
+  const { error, run, data, loading } = useCloudFunction<Post.PostItem>({ name: 'router', path: 'postDetails', body: { id }, manual: true });
+  const { error: listError, run: fetchCommentList, data: listData, loading: listLoading } = useCloudFunction<Comment.CommentItem[]>({ name: 'router', path: 'commentList', body: { postId: id }, manual: true });
+  const { error: errorView } = useCloudFunction<Post.PostItem>({ name: 'router', path: 'postView', body: { id } });
+
+  useDidShow(() => {
+    run();
+    fetchCommentList();
+  });
+
+  const onPostHandler = (e) => {
+    setHandlerLoading(e.loading);
+    // 刷新一下数据
+    run();
+  }
+
+  const loadingVisible = useMemo(() => {
+    return loading || listLoading || handlerLoading;
+  }, [loading, listLoading, handlerLoading])
 
   console.log(listData);
 
@@ -41,7 +61,7 @@ const Details: React.FC<IProps> = (props) => {
               <div className="postDetailsContentAuthorNameContentTime">{data?.createTime}</div>
             </div>
             <div className="postDetailsContentAuthorNameCount">
-              <TextIcon icon="eye" text={10} />
+              <TextIcon icon="eye" text={data?.viewCount} />
             </div>
           </div>
           <div className="postDetailsContentAuthorPlate">
@@ -61,28 +81,11 @@ const Details: React.FC<IProps> = (props) => {
         </div>
       </div>
       <div className="postDetailsHandler">
-        <div
-          className="postDetailsHandlerComment"
-          onClick={() => {
-            Taro.navigateTo({ url: `/pages/comment/create/index?postId=${data?._id}` });
-          }}
-        >
-          <TextIcon style={{ fontSize: 14, color: '#888' }} text="我要回复" icon="message" />
-        </div>
-        <div
-          className="postDetailsHandlerShare"
-          onClick={() => {
-            Taro.showShareMenu({
-              withShareTicket: true,
-              showShareItems: ['wechatFriends', 'wechatMoment'],
-              fail: (e) => { console.log(e) },
-              success: (e) => { console.log(e) }
-            })
-          }}
-        >
-          <TextIcon style={{ fontSize: 14, color: '#888' }} icon="share" />
-        </div>
+        {
+          data && (<Handler data={data} onAttitude={onPostHandler} onFavorite={onPostHandler} />)
+        }
       </div>
+      <Loading visible={loadingVisible} />
     </div>
   )
 }

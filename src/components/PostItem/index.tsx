@@ -17,7 +17,7 @@ type IProps = {
 const PostItem: React.FC<IProps> = (props) => {
   const { data } = props;
   const onItemClick = () => {
-    Taro.navigateTo({ url: `/pages/post/details/index?id=${data._id}` })
+    Taro.navigateTo({ url: `/pages/post/details/index?id=${data.id}` })
   }
   return (
     <Cell onClick={onItemClick}>
@@ -36,11 +36,11 @@ const PostItem: React.FC<IProps> = (props) => {
           <div className="cmpPostItemWrapperFooterRight">
             <div className="cmpPostItemWrapperFooterReadCount">
               <Icon name="eye" />
-              <span>10</span>
+              <span>{data.viewCount}</span>
             </div>
             <div className="cmpPostItemWrapperFooterCommentCount">
               <Icon name="message" />
-              <span>20</span>
+              <span>{data.commentCount}</span>
             </div>
           </div>
         </div>

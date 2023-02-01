@@ -1,33 +1,42 @@
 import { cloud } from '@tarojs/taro';
 import { useState, useEffect, useCallback } from 'react';
 
-function useCloudFunction<T>({ name, path, body }) {
+function useCloudFunction<T>({ name, path, body, manual = false }) {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [data, setData] = useState<T>();
 
   useEffect(() => {
-    run();
+    if (!manual) {
+      run();
+    }
   }, []);
 
   const run = useCallback(async () => {
-    setLoading(true);
-    setError('');
-    const res = await cloud.callFunction({
-      name: name,
-      data: {
-        $url: path,
-        data: body,
-      }
-    });
-    setLoading(false);
-    if ((res.result as any)?.code === 200) {
+
+    try {
+      setLoading(true);
       setError('');
-      setData((res.result as any)?.data);
-    } else {
-      setError(res.errMsg);
+      const res = await cloud.callFunction({
+        name: name,
+        data: {
+          $url: path,
+          data: body,
+        }
+      });
+      setLoading(false);
+      if ((res.result as any)?.code === 200) {
+        setError('');
+        setData((res.result as any)?.data);
+      } else {
+        setError(res.errMsg);
+      }
+    } catch (e) {
+      setLoading(false);
+      setError(e);
     }
-  }, [name, path, data]);
+
+  }, [name, path, body]);
 
   return { error, data, run, loading };
 }

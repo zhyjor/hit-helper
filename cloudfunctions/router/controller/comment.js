@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require('uuid');
 const { add, findByPage, find, update } = require('../unit/db');
 const getUserInfoByOpenId = require('../unit/user');
 
@@ -6,7 +7,7 @@ const commentCreate = async (ctx, next) => {
   // 获取本人的信息
   let userInfo = await getUserInfoByOpenId(ctx.wxContext.OPENID);
   // 判断是评论给帖子，还是评论给评论
-  const { postId, parentCommentId, body } = ctx._req.event.data;
+  const { postId, parentCommentId, body, rootCommentId } = ctx._req.event.data;
 
   const commentBaseInfo = {
     body,
@@ -15,23 +16,24 @@ const commentCreate = async (ctx, next) => {
     children: null,
     childrenCount: 0,
     hasPower: true,
+    id: uuidv4(), // 添加ID
   }
 
   if (parentCommentId) {
-    // 再查询一下所属的评论的信息
-    const belongCommentInfoList = await find({ collect: 'comment', filter: { _id: parentCommentId } });
-    let belongCommentInfo = belongCommentInfoList.data[0];
-    let rootCommentInfo = belongCommentInfo;
-    // 先判断一下是否有rootCommentId
-    if (belongCommentInfo.rootCommentId) {
-      const rootCommentInfoList = await find({ collect: 'comment', filter: { _id: belongCommentInfo.rootCommentId } });
-      rootCommentInfo = rootCommentInfoList.data[0];
-      commentBaseInfo.rootCommentId = belongCommentInfo.rootCommentId;
+    // 先获取根评价ID
+    const rootCommentInfoList = await find({ collect: 'comment', filter: { id: rootCommentId } });
+    rootCommentInfo = rootCommentInfoList.data[0];
+
+    // 再获取评价的ID
+    let belongCommentInfo;
+    if (parentCommentId !== rootCommentId) {
+      const belongCommentInfoList = await find({ collect: 'comment', filter: { id: parentCommentId } });
+      belongCommentInfo = belongCommentInfoList.data[0];
     } else {
-      // 没有rootCommentId的时候，需要设置为parentCommentId
-      commentBaseInfo.rootCommentId = parentCommentId;
+      belongCommentInfo = rootCommentInfo;
     }
 
+    commentBaseInfo.rootCommentId = rootCommentId;
     commentBaseInfo.parentCommentId = parentCommentId;
     commentBaseInfo.floor = belongCommentInfo.floor;
     commentBaseInfo.postId = belongCommentInfo.postId;
@@ -40,13 +42,7 @@ const commentCreate = async (ctx, next) => {
     commentBaseInfo.receiverOpenId = belongCommentInfo.OPENID;
     commentBaseInfo.receiverNickName = belongCommentInfo.nickName;
     commentBaseInfo.receiverAvatarUrl = belongCommentInfo.avatarUrl;
-    //
-    // 新增数据
-    let res = await add({
-      collect: 'comment',
-      data: commentBaseInfo,
-    });
-    commentBaseInfo._id = res._id;
+
     // 更新一下所属评论
     if (rootCommentInfo.children) {
       rootCommentInfo.children.push(commentBaseInfo);
@@ -56,14 +52,18 @@ const commentCreate = async (ctx, next) => {
       rootCommentInfo.childrenCount = 1;
     }
 
-    // ID不能包含
-    delete rootCommentInfo._id;
-    await update({ collect: 'comment', filter: { _id: commentBaseInfo.rootCommentId }, data: rootCommentInfo });
-
-    ctx.body.data = res;
+    // 新增一条记录
+    // 新增数据
+    await add({
+      collect: 'comment',
+      data: commentBaseInfo,
+    });
+    // 再去更新一下ID
+    await update({ collect: 'comment', filter: { id: commentBaseInfo.rootCommentId }, data: rootCommentInfo });
+    ctx.body.data = commentBaseInfo.id;
   } else {
     // 先查询一下所属的帖子
-    const belongPostInfoList = await find({ collect: 'post', filter: { _id: postId } });
+    const belongPostInfoList = await find({ collect: 'post', filter: { id: postId } });
     const belongPostInfo = belongPostInfoList.data[0];
     if (belongPostInfo.OPENID === userInfo.OPENID) {
       // 是自己的帖子
@@ -74,14 +74,14 @@ const commentCreate = async (ctx, next) => {
     const commentCount = belongPostInfo.commentCount !== undefined ? belongPostInfo.commentCount + 1 : 1;
 
     // belongPostInfo.commentCount = belongPostInfo.commentCount !== undefined ? belongPostInfo.commentCount + 1 : 1;
-    await update({ collect: 'post', filter: { _id: postId }, data: { commentCount } });
+    await update({ collect: 'post', filter: { id: postId }, data: { commentCount } });
     // 新增数据
     let res = await add({
       collect: 'comment',
       data: commentBaseInfo,
     });
     // 再去更新一下ID
-    ctx.body.data = res;
+    ctx.body.data = commentBaseInfo.id;
   }
 
   await next(); // 执行下一中间件
@@ -92,7 +92,7 @@ const commentDetails = async (ctx, next) => {
   let res = await find({
     collect: 'comment',
     filter: {
-      _id: id,
+      id,
     },
     field: {
     }

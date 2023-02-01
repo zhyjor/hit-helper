@@ -6,20 +6,28 @@ import {
   Notify,
 } from "@nutui/nutui-react-taro";
 import Taro, { cloud } from "@tarojs/taro";
+import Loading from "../../../components/Loading";
+import useCloudFunction from "../../../hooks/useCloudFunction";
 
 import "./index.less";
 
 
 const InputPost = () => {
   const $instance = Taro.getCurrentInstance();
-  console.log($instance?.router?.params);
-  const { postId, parentCommentId, receiverNickName } = $instance?.router?.params;
+  const { postId, parentCommentId, receiverNickName, rootCommentId } = $instance?.router?.params;
+
+  const [body, setBody] = useState<string>('');
+
+  const { run, loading } = useCloudFunction({
+    name: 'router', path: 'commentCreate', body: {
+      body, postId, parentCommentId, rootCommentId,
+    }, manual: true,
+  });
 
 
   const [plateType, setPlateType] = useState<Plate.PlateType>('help');
   const [plateTypeName, setPlateTypeName] = useState<string>('');
 
-  const [body, setBody] = useState<string>('');
 
   useEffect(() => {
     const $instance = Taro.getCurrentInstance();
@@ -28,27 +36,11 @@ const InputPost = () => {
     setPlateTypeName($instance?.router?.params.plateTypeName as any);
   }, []);
 
-  const submit = useCallback(async () => {
-    const submitData: any = {
-      body,
-    };
-    if (postId) submitData.postId = postId;
-    if (parentCommentId) submitData.parentCommentId = parentCommentId;
-    const data = await cloud.callFunction({
-      name: 'router',
-      data: {
-        $url: 'commentCreate',
-        data: submitData,
-      }
-    });
-    // Notify.text(data.errMsg);
-    console.log(data);
-    if (data.result?.code === 200) {
-      // Taro.navigateBack();
-    } else {
-      // Notify.text(data.errMsg);
-    }
-  }, [body])
+  const onSubmit = async () => {
+    await run();
+    Taro.navigateBack();
+  }
+
 
   return (
     <div className="inputPostWrapper">
@@ -67,12 +59,14 @@ const InputPost = () => {
         <Button
           className="inputPostPublish"
           type="primary"
-          onClick={submit}
+          onClick={onSubmit}
+          // loading={loading}
           disabled={!(body)}
         >
           发布{plateTypeName}
         </Button>
       </div>
+      <Loading visible={loading} />
     </div>
   )
 }

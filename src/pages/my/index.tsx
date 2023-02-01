@@ -4,7 +4,9 @@ import useLogin from '../../hooks/useLogin';
 import {
   Button,
   Avatar,
+  Icon,
 } from "@nutui/nutui-react-taro";
+import Taro from '@tarojs/taro';
 import List from './list';
 import "./index.less";
 
@@ -41,6 +43,14 @@ const My = () => {
 
           }
 
+        </div>
+        <div className="myHeaderEdit" onClick={() => {
+          Taro.navigateTo({ url: '/pages/my/edit/index' });
+        }}>
+          <div>
+            编辑
+          </div>
+          <Icon name="right" />
         </div>
       </div>
       <div className="myInfoFoot">

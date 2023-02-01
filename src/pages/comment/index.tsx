@@ -1,20 +1,24 @@
 import { Component } from "react";
-import Taro from '@tarojs/taro'
+import Taro, { useDidShow } from '@tarojs/taro'
 import {
   Button,
   Cell,
   Avatar,
 } from "@nutui/nutui-react-taro";
-import CommentItem from "../../components/CommentItem";
+import CommentList from "./list";
 import useCloudFunction from "../../hooks/useCloudFunction";
 
 import "./index.less";
 
-const CommentList = () => {
+const CommentPage = () => {
   const $instance = Taro.getCurrentInstance();
   const id = $instance?.router?.params.id;
-  const { error, data, loading } = useCloudFunction<Comment.CommentItem>({ name: 'router', path: 'commentDetails', body: { id } });
-  console.log(data);
+  const { error, data, loading, run } = useCloudFunction<Comment.CommentItem>({ name: 'router', path: 'commentDetails', body: { id }, manual: true });
+
+  useDidShow(() => {
+    run();
+  });
+
   let commentList: Comment.CommentItem[] = [];
   if (data) {
     commentList.push(data);
@@ -24,11 +28,9 @@ const CommentList = () => {
   }
   return (
     <div className="commentWrapper">
-      {
-        commentList?.map((i, idx) => <CommentItem data={i} showReceiver={idx > 0} />)
-      }
+      <CommentList data={commentList} />
     </div>
   )
 }
 
-export default CommentList;
+export default CommentPage;

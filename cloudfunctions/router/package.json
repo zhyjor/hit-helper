@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "tcb-router": "^1.1.2",
+    "uuid": "^9.0.0",
     "wx-server-sdk": "^2.6.3"
   }
 }

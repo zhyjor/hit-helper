@@ -21,10 +21,10 @@ type IProps = {
 const CommentItem: React.FC<IProps> = (props) => {
   const { data, showChildren, showReceiver } = props;
   const onChildrenCommentClick = () => {
-    Taro.navigateTo({ url: `/pages/comment/index?id=${data?._id}` });
+    Taro.navigateTo({ url: `/pages/comment/index?id=${data?.id}` });
   }
   const onCommentClick = () => {
-    Taro.navigateTo({ url: `/pages/comment/create/index?parentCommentId=${data?._id}&receiverNickName=${data.nickName}` });
+    Taro.navigateTo({ url: `/pages/comment/create/index?parentCommentId=${data?.id}&receiverNickName=${data.nickName}&rootCommentId=${data.rootCommentId ?? data.id }` });
   }
   return (
     // <Cell onClick={onItemClick}>

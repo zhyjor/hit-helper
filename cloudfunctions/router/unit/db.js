@@ -1,5 +1,7 @@
 // cloudfunctions\router\unit\db.js
 const cloud = require('wx-server-sdk');
+const { v4: uuidv4 } = require('uuid');
+
 cloud.init({
   traceUser: true,
   env: "hit-helper-3g7q095q412bef1b"
@@ -37,6 +39,8 @@ const add = async ({ collect, data }) => {
   } catch (error) {
     console.log(collect, '已存在');
   }
+  // 添加ID
+  data.id = uuidv4();
   data.createTime = formatTime(db.serverDate());
   data.updateTime = formatTime(db.serverDate());
 
@@ -140,6 +144,7 @@ const update = async ({ collect, filter, data }) => {
   data.originalUpdateTime = db.serverDate();
 
   try {
+    delete data._id;
     let res = await db
       .collection(collect)
       .where(filter)

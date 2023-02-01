@@ -30,6 +30,7 @@
       .postDetailsContentAuthorName {
         display: flex;
         flex: 1;
+
         .postDetailsContentAuthorNameContent {
           display: flex;
           flex-direction: column;
@@ -54,25 +55,30 @@
         }
 
       }
+
       .postDetailsContentAuthorPlate {
         font-size: 16px;
         display: flex;
         align-items: center;
       }
     }
+
     .postDetailsContentBody {
       background: #fff;
       padding: 0 10px 20px 10px;
       font-size: 18px;
       font-weight: 100;
     }
+
     .postDetailsContentComment {
       margin-top: 10px;
       background: #fff;
+
       .postDetailsContentCommentDivider {
         color: #ddd;
         width: 60%;
-        padding-left: 20%;      }
+        padding-left: 20%;
+      }
     }
   }
 
@@ -83,6 +89,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 10px;
+
     .postDetailsHandlerComment {
       background: #eee;
       height: 40px;
@@ -93,8 +100,17 @@
       align-items: center;
       border-radius: 40px;
     }
+
     .postDetailsHandlerShare {
-      margin-left: 16px;
+
+      .shareButton {
+        border: 0;
+        padding: 0;
+      }
+
+      button::after {
+        border: 0;
+      }
     }
   }
 }

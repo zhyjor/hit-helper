@@ -44,7 +44,7 @@ const App = () => {
       >
         {list.map((item) => {
           return (
-            <li key={item._id} className="scrollItem">
+            <li key={item.id} className="scrollItem">
               <PostItem data={item} />
             </li>
           )

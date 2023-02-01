@@ -1,6 +1,6 @@
 declare namespace Comment {
   interface CommentItem {
-    _id: string;
+    id: string;
     body: string;
     createTime: string;
     OPENID: string;
@@ -20,5 +20,7 @@ declare namespace Comment {
     rootCommentId?: string; // 根评论ID
     parentCommentId: string;
     postId: string;
+    attitude: boolean; // 点赞
+    attitudeUserList: Array<User.SimpleUserInfo>;
   }
 }
