@@ -1,8 +1,5 @@
-import { Component } from "react";
 import Taro from '@tarojs/taro'
 import {
-  Button,
-  Cell,
   Avatar,
 } from "@nutui/nutui-react-taro";
 import "./index.less";

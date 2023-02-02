@@ -1,11 +1,9 @@
-import { Component, useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
-  Input,
   TextArea,
-  Notify,
 } from "@nutui/nutui-react-taro";
-import Taro, { cloud } from "@tarojs/taro";
+import Taro from "@tarojs/taro";
 import Loading from "../../../components/Loading";
 import useCloudFunction from "../../../hooks/useCloudFunction";
 

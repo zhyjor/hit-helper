@@ -4,8 +4,8 @@ import {
 } from "@nutui/nutui-react-taro";
 import Home from '../home';
 import Post from '../post'
-import Plate from '../plate';
-import Message from '../message';
+// import Plate from '../plate';
+// import Message from '../message';
 import My from '../my';
 import "./index.less";
 

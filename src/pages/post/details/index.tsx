@@ -1,10 +1,8 @@
-import React, { Component, useCallback, useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import useCloudFunction from "../../../hooks/useCloudFunction";
 import {
-  Button,
   Divider,
   Tag,
-  Notify,
   Avatar,
 } from "@nutui/nutui-react-taro";
 import Taro, { useDidShow } from "@tarojs/taro";

@@ -1,5 +1,5 @@
-import { Button, Avatar, Input } from "@nutui/nutui-react-taro";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { Button, Avatar } from "@nutui/nutui-react-taro";
+import { useCallback, useMemo, useState } from "react";
 import useLogin from '../../../hooks/useLogin';
 import useCloudFunction from "../../../hooks/useCloudFunction";
 

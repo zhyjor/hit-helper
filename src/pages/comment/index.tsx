@@ -1,10 +1,4 @@
-import { Component } from "react";
 import Taro, { useDidShow } from '@tarojs/taro'
-import {
-  Button,
-  Cell,
-  Avatar,
-} from "@nutui/nutui-react-taro";
 import CommentList from "./list";
 import useCloudFunction from "../../hooks/useCloudFunction";
 
