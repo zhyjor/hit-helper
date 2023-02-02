@@ -1,4 +1,3 @@
-// import { useLocalStore, observer } from '@tarojs/mobx'
 import useLogin from '../../hooks/useLogin';
 
 import {

@@ -1,4 +1,3 @@
-// import { observable } from 'mobx';
 import { getStorageSync, cloud } from '@tarojs/taro';
 import { useState, useEffect } from 'react';
 

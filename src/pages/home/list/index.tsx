@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Infiniteloading, Cell } from '@nutui/nutui-react-taro';
+import { Infiniteloading, PullToRefresh } from '@nutui/nutui-react-taro';
 import Taro, { cloud } from "@tarojs/taro";
 
 import PostItem from "../../../components/PostItem";
@@ -20,7 +20,7 @@ const App = () => {
     });
     console.log(res);
     const { code, data, page } = res.result as any;
-    if(code === 200) {
+    if (code === 200) {
       setPageNo(page.pageNo);
       setList(list.concat(data));
     }
@@ -31,25 +31,27 @@ const App = () => {
   }, [])
 
   const loadMore = (done: () => void) => {
-
+    console.log('more')
   }
 
   return (
     <ul id="scroll" className="scroll">
-      <Infiniteloading
-        containerId="scroll"
-        useWindow={false}
-        hasMore={hasMore}
-        loadMore={loadMore}
-      >
-        {list.map((item) => {
-          return (
-            <li key={item.id} className="scrollItem">
-              <PostItem data={item} />
-            </li>
-          )
-        })}
-      </Infiniteloading>
+      <PullToRefresh onRefresh={async () => { console.log('pull') }}>
+        <Infiniteloading
+          containerId="scroll"
+          useWindow={false}
+          hasMore={hasMore}
+          loadMore={loadMore}
+        >
+          {list.map((item) => {
+            return (
+              <li key={item.id} className="scrollItem">
+                <PostItem data={item} />
+              </li>
+            )
+          })}
+        </Infiniteloading>
+      </PullToRefresh>
     </ul>
   )
 }
