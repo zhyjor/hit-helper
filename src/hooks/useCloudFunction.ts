@@ -8,12 +8,11 @@ function useCloudFunction<T>({ name, path, body, manual = false }) {
 
   useEffect(() => {
     if (!manual) {
-      run();
+      run(body);
     }
   }, []);
 
-  const run = useCallback(async () => {
-
+  const run = useCallback<(e?: any) => Promise<[any, T] | [any]>>(async (b?: any) => {
     try {
       setLoading(true);
       setError('');
@@ -21,19 +20,22 @@ function useCloudFunction<T>({ name, path, body, manual = false }) {
         name: name,
         data: {
           $url: path,
-          data: body,
+          data: b ?? body,
         }
       });
       setLoading(false);
       if ((res.result as any)?.code === 200) {
         setError('');
         setData((res.result as any)?.data);
+        return [null, (res.result as any)?.data as T]
       } else {
         setError(res.errMsg);
+        return [res.errMsg]
       }
     } catch (e) {
       setLoading(false);
       setError(e);
+      return [e]
     }
 
   }, [name, path, body]);

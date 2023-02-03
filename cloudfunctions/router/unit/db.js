@@ -121,7 +121,7 @@ const findByPage = async ({ collect, filter, field, page }) => {
     .limit(pageSize)
     .field(field)
     .get();
-  return { total, list: res };
+  return { total, list: res.data, pageNo, pageSize };
 };
 
 /**

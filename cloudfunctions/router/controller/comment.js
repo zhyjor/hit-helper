@@ -104,7 +104,7 @@ const commentDetails = async (ctx, next) => {
 
 const commentList = async (ctx, next) => {
   const { pageNo, pageSize, postId } = ctx._req.event.data;
-  let { list, total } = await findByPage({
+  let data = await findByPage({
     collect: 'comment',
     filter: {
       postId: postId,
@@ -117,13 +117,7 @@ const commentList = async (ctx, next) => {
       pageNo,
     }
   });
-  ctx.body.data = list.data;
-  ctx.body.page = {
-    pageSize,
-    pageNo,
-    total,
-  };
-
+  ctx.body.data = data;
   await next(); // 执行下一中间件
 }
 

@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from "react";
 import useCloudFunction from "../../../hooks/useCloudFunction";
 import {
-  Divider,
   Tag,
   Avatar,
 } from "@nutui/nutui-react-taro";
@@ -10,6 +9,7 @@ import TextIcon from "../../../components/TextIcon";
 import CommentItem from "../../../components/CommentItem";
 import Handler from '../../../components/Handler';
 import Loading from "../../../components/Loading";
+import Footer from "../../../components/Footer";
 
 import "./index.less";
 
@@ -75,7 +75,7 @@ const Details: React.FC<IProps> = (props) => {
               <CommentItem data={i} showChildren />
             ))
           }
-          <Divider className="postDetailsContentCommentDivider">已显示全部内容</Divider>
+          <Footer text="已显示全部内容" />
         </div>
       </div>
       <div className="postDetailsHandler">

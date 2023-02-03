@@ -1,53 +1,56 @@
 import { useState, useEffect, useMemo } from "react";
-import { ScrollView } from "@tarojs/components";
+
 import useCloudFunction from "../../../hooks/useCloudFunction";
 
 import PostItem from "../../../components/PostItem";
+import AdvanceScrollView from "../../../components/AdvanceScrollView";
 import './index.less';
 
+const PAGESIZE = 10;
+
 const App = () => {
-  // const [list, setList] = useState<Post.PostItem[]>([])
+  const [list, setList] = useState<Post.PostItem[]>([])
   const [hasMore, setHasMore] = useState(true);
   const [pageNo, setPageNo] = useState(1);
-  const [refresherTriggered, setRefresherTriggered] = useState(false);
-  const { data: pageData, run: getPostList, loading } = useCloudFunction({ manual: true, name: 'router', path: 'postList', body: { pageNo, pageSize: 10 } });
-
-  const list = useMemo(() => {
-    if (pageData) {
-      return pageData;
-    }
-    return [];
-  }, [pageData]);
-
-  const fetList = async () => {
-    await getPostList();
-    setRefresherTriggered(false);
-  }
+  const { run: fetList, loading } = useCloudFunction<Base.Page<Post.PostItem>>({ manual: true, name: 'router', path: 'postList', body: { pageNo, pageSize: 10 } });
 
   useEffect(() => {
-    fetList();
-  }, [pageNo]);
+    onRefresherRefresh();
+  }, []);
 
-  const onRefresherRefresh = async () => {
-    setRefresherTriggered(true);
-    setPageNo(1)
+  const checkHasMore = (pageNo, total) => {
+    return pageNo * PAGESIZE < total;
   }
 
-  const onReachBottomHandler = () => {
+  const onRefresherRefresh = async () => {
     if (loading) return;
-    setPageNo(pageNo + 1);
+    const [e, data] = await fetList({ pageNo: 1, pageSize: PAGESIZE });
+    console.log(data);
+    if (data) {
+      setList(data?.list!);
+      setPageNo(data.pageNo);
+      setHasMore(checkHasMore(data.pageNo, data.total));
+    }
+  }
+
+  const onReachBottomHandler = async () => {
+    if (loading && !hasMore) return;
+    const [e, data] = await fetList({ pageNo: pageNo + 1, pageSize: PAGESIZE });
+    if (data) {
+      setHasMore(checkHasMore(data.pageNo, data.total));
+      setPageNo(data.pageNo);
+      const _list = list.concat(data.list ?? []);
+      console.log(_list);
+      setList(_list);
+    }
   }
 
   return (
     <ul id="scroll" className="scroll">
-      <ScrollView
-        className='scrollview'
-        scrollY
-        refresherEnabled
-        refresherTriggered={refresherTriggered}
-        onRefresherRefresh={onRefresherRefresh}
-        onScrollToLower={onReachBottomHandler}
-        lowerThreshold={30}
+      <AdvanceScrollView
+        hasMore={hasMore}
+        onLoadMore={onReachBottomHandler}
+        onRefresh={onRefresherRefresh}
       >
         {list.map((item) => {
           return (
@@ -56,7 +59,7 @@ const App = () => {
             </li>
           )
         })}
-      </ScrollView>
+      </AdvanceScrollView>
     </ul>
   )
 }
