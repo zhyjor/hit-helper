@@ -119,12 +119,17 @@ const postDetails = async (ctx, next) => {
 }
 
 const postList = async (ctx, next) => {
-  const { pageNo, pageSize } = ctx._req.event.data;
+  const { pageNo, pageSize, mine, favorite } = ctx._req.event.data;
+  const filter = {};
+
+  // 我的帖子
+  if (mine) filter.OPENID = ctx.wxContext.OPENID;
+  // 我的收藏
+  if (favorite) filter['favoriteUserList.OPENID'] = ctx.wxContext.OPENID;
+
   let data = await findByPage({
     collect: 'post',
-    filter: {
-      // OPENID: ctx.wxContext.OPENID,
-    },
+    filter,
     field: {
     },
     page: {

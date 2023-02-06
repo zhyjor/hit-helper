@@ -1,21 +1,40 @@
 import React, { useState } from "react";
 import { Tabs, TabPane } from '@nutui/nutui-react-taro';
-import PostList from '../../home/list';
+import PostItem from '../../../components/PostItem';
 
-const App = () => {
-  const [tab1value, setTab1value] = useState('0');
+const PostList = ({ list }) => {
+  console.log(list);
+  return (
+    <ul>
+      {list.map((item) => {
+        return (
+          <li key={item.id} className="scrollItem">
+            <PostItem data={item} />
+          </li>
+        )
+      })}
+    </ul>
+  )
+}
+
+interface IProps {
+  list: Post.PostItem[];
+  tabKey: Feature.TabKey;
+  onTabChange: (e: Feature.TabKey) => void;
+}
+const App: React.FC<IProps> = (props) => {
+  const { list, tabKey, onTabChange } = props;
   return (
     <>
-      <Tabs value={tab1value} onChange={({ paneKey }) => {
-        setTab1value(paneKey)
+      <Tabs value={tabKey} onChange={({ paneKey }) => {
+        onTabChange(paneKey as Feature.TabKey)
       }}>
-        <TabPane title="帖子">
-          <PostList />
+        <TabPane paneKey="mine" title="帖子">
+          <PostList list={list} />
         </TabPane>
-        <TabPane title="收藏">
-          <PostList />
+        <TabPane paneKey="favorite" title="收藏">
+          <PostList list={list} />
         </TabPane>
-        {/* <TabPane title="Tab 3"> Tab 3 </TabPane> */}
       </Tabs>
     </>
   );

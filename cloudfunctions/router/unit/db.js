@@ -106,7 +106,7 @@ const findByPage = async ({ collect, filter, field, page }) => {
   }
 
   // 先取出集合记录总数
-  const countResult = await db.collection(collect).count()
+  const countResult = await db.collection(collect).where(filter).count()
   const total = countResult.total
 
   const { pageSize = 20, pageNo = 1 } = page;

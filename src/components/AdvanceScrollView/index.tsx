@@ -7,9 +7,10 @@ interface IProps {
   onRefresh: () => void;
   onLoadMore: () => void;
   children: any;
+  className?: string;
 }
 const AdvanceScrollView: React.FC<IProps> = (props) => {
-  const { onLoadMore, onRefresh, hasMore } = props;
+  const { onLoadMore, onRefresh, hasMore, className } = props;
 
   const [refresherTriggered, setRefresherTriggered] = useState(false);
   const [showLoadMore, setShowLoadMore] = useState(false);
@@ -25,9 +26,10 @@ const AdvanceScrollView: React.FC<IProps> = (props) => {
     await onLoadMore();
     setShowLoadMore(false);
   }
+
   return (
     <ScrollView
-      className='scrollview'
+      className={className}
       scrollY
       refresherEnabled={!!onRefresh}
       refresherTriggered={refresherTriggered}
@@ -36,9 +38,15 @@ const AdvanceScrollView: React.FC<IProps> = (props) => {
       lowerThreshold={30}
     >
       {props.children}
-      {
-        hasMore ? (showLoadMore ? <Footer text="加载中..." /> : null) : <Footer text="已显示全部内容" />
-      }
+      <div
+        style={{
+          background: '#fff'
+        }}
+      >
+        {
+          hasMore ? (showLoadMore ? <Footer text="加载中..." /> : null) : <Footer text="已显示全部内容" />
+        }
+      </div>
     </ScrollView>
   )
 }

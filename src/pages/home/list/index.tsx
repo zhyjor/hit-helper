@@ -8,6 +8,10 @@ import './index.less';
 
 const PAGESIZE = 10;
 
+const checkHasMore = (pageNo, total) => {
+  return pageNo * PAGESIZE < total;
+}
+
 const App = () => {
   const [list, setList] = useState<Post.PostItem[]>([])
   const [hasMore, setHasMore] = useState(true);
@@ -17,10 +21,6 @@ const App = () => {
   useEffect(() => {
     onRefresherRefresh();
   }, []);
-
-  const checkHasMore = (pageNo, total) => {
-    return pageNo * PAGESIZE < total;
-  }
 
   const onRefresherRefresh = async () => {
     if (loading) return;
@@ -34,7 +34,7 @@ const App = () => {
   }
 
   const onReachBottomHandler = async () => {
-    if (loading && !hasMore) return;
+    if (loading || !hasMore) return;
     const [e, data] = await fetList({ pageNo: pageNo + 1, pageSize: PAGESIZE });
     if (data) {
       setHasMore(checkHasMore(data.pageNo, data.total));

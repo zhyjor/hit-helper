@@ -6,73 +6,80 @@
 
   .postDetailsContent {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: auto;
+    overflow: hidden;
 
-    .postDetailsContentTitle {
-      padding-bottom: 20px;
-      background: #fff;
-      padding: 0 10px;
-      font-size: 20px;
-      font-weight: 400;
+    .postDetailsScroll {
+      height: 100%;
     }
 
-    .postDetailsContentAuthor {
+    .postDetailsScrollContent {
       display: flex;
-      flex-direction: row;
-      height: 50px;
-      background: #fff;
-      padding: 20px 10px;
+      flex-direction: column;
 
-      .postDetailsContentAuthorAvatar {}
-
-      .postDetailsContentAuthorName {
-        display: flex;
-        flex: 1;
-
-        .postDetailsContentAuthorNameContent {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          height: 50px;
-          margin: 0 8px;
-
-          .postDetailsContentAuthorNameContentName {
-            font-size: 16px;
-
-          }
-
-          .postDetailsContentAuthorNameContentTime {
-            font-size: 14px;
-          }
-        }
-
-        .postDetailsContentAuthorNameCount {
-          display: flex;
-          height: 100%;
-          align-items: flex-end;
-        }
-
+      .postDetailsContentTitle {
+        padding-bottom: 20px;
+        background: #fff;
+        padding: 0 10px;
+        font-size: 20px;
+        font-weight: 400;
       }
 
-      .postDetailsContentAuthorPlate {
-        font-size: 16px;
+      .postDetailsContentAuthor {
         display: flex;
-        align-items: center;
+        flex-direction: row;
+        height: 50px;
+        background: #fff;
+        padding: 20px 10px;
+
+        .postDetailsContentAuthorAvatar {}
+
+        .postDetailsContentAuthorName {
+          display: flex;
+          flex: 1;
+
+          .postDetailsContentAuthorNameContent {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 50px;
+            margin: 0 8px;
+
+            .postDetailsContentAuthorNameContentName {
+              font-size: 16px;
+
+            }
+
+            .postDetailsContentAuthorNameContentTime {
+              font-size: 14px;
+            }
+          }
+
+          .postDetailsContentAuthorNameCount {
+            display: flex;
+            height: 100%;
+            align-items: flex-end;
+          }
+
+        }
+
+        .postDetailsContentAuthorPlate {
+          font-size: 16px;
+          display: flex;
+          align-items: center;
+        }
       }
-    }
 
-    .postDetailsContentBody {
-      background: #fff;
-      padding: 0 10px 20px 10px;
-      font-size: 18px;
-      font-weight: 100;
-    }
+      .postDetailsContentBody {
+        background: #fff;
+        padding: 0 10px 20px 10px;
+        font-size: 18px;
+        font-weight: 100;
+      }
 
-    .postDetailsContentComment {
-      margin-top: 10px;
-      background: #fff;
+      .postDetailsContentComment {
+        margin-top: 10px;
+        background: #fff;
+      }
     }
   }
 

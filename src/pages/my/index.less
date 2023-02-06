@@ -1,31 +1,42 @@
 .myWrapper {
-  .myHeader {
-    display: flex;
-    background: #555;
-    align-items: center;
-    .myHeaderInfo {
+  height: 100%;
+
+  .myScroll {
+    height: 100%;
+    overflow: hidden;
+    .myHeader {
       display: flex;
-      flex-direction: row;
+      background: #555;
       align-items: center;
-      padding: 50px 20px 10px 20px;
-      flex: 1;
-      .myHeaderNickName {
-        padding-left: 10px;
-        color: white;
-        font-weight: 400;
+
+      .myHeaderInfo {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 50px 20px 10px 20px;
+        flex: 1;
+
+        .myHeaderNickName {
+          padding-left: 10px;
+          color: white;
+          font-weight: 400;
+        }
+
+        .myHeaderLogin {
+          margin-left: 10px;
+        }
       }
 
-      .myHeaderLogin {
-        margin-left: 10px;
+      .myHeaderEdit {
+        display: flex;
+        padding: 50px 0px 10px 20px;
+        align-items: center;
+        color: #fff;
       }
     }
-    .myHeaderEdit{
-      display: flex;
-      padding: 50px 0px 10px 20px;
-      align-items: center;
-      color: #fff;
-    }
+
+    .myInfoFoot {}
   }
 
-  .myInfoFoot {}
+
 }
