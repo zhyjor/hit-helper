@@ -6,7 +6,7 @@ import {
 import "./index.less";
 
 type IProps = {
-  icon: 'eye' | 'message' | 'share-n' | 's-follow' | 'fabulous';
+  icon: 'eye' | 'message' | 'share-n' | 's-follow' | 'fabulous' | 'more-s';
   text?: number | string;
   style?: React.CSSProperties;
   onClick?: (e?: any) => void;

@@ -9,6 +9,7 @@ import {
 } from "@nutui/nutui-react-taro";
 import Taro from "@tarojs/taro";
 import TextIcon from "../TextIcon";
+import More from './More';
 
 import "./index.less";
 
@@ -61,6 +62,9 @@ const Handler: React.FC<IProps> = (props) => {
         >
           <TextIcon style={{ fontSize: 16, color: '#888' }} icon="share-n" />
         </Button>
+      </div>
+      <div>
+        <More />
       </div>
     </div>
   )
