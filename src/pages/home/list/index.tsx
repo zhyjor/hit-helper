@@ -12,7 +12,12 @@ const checkHasMore = (pageNo, total) => {
   return pageNo * PAGESIZE < total;
 }
 
-const App = () => {
+interface IProps {
+  type?: 'isEssence';
+}
+
+const App: React.FC<IProps> = (props) => {
+  const { type } = props;
   const [list, setList] = useState<Post.PostItem[]>([])
   const [hasMore, setHasMore] = useState(true);
   const [pageNo, setPageNo] = useState(1);
@@ -24,7 +29,7 @@ const App = () => {
 
   const onRefresherRefresh = async () => {
     if (loading) return;
-    const [e, data] = await fetList({ pageNo: 1, pageSize: PAGESIZE });
+    const [e, data] = await fetList({ pageNo: 1, pageSize: PAGESIZE, isEssence: type === 'isEssence' ? true : undefined });
     console.log(data);
     if (data) {
       setList(data?.list!);

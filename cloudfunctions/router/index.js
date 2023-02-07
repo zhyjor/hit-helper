@@ -3,7 +3,7 @@
 const cloud = require('wx-server-sdk');
 // 上古项目 给小程序云函数加个路由
 const TcbRouter = require('tcb-router');
-const { postCreate, postList, postDetails, postAttitude, postFavorite, postView } = require('./controller/post');
+const { postCreate, postList, postDetails, postAttitude, postFavorite, postView, postDeleted, postEditEssence } = require('./controller/post');
 const { commentCreate, commentList, commentDetails } = require('./controller/comment');
 const { login, saveUserInfo, updateUserInfo } = require('./controller/user');
 
@@ -33,6 +33,8 @@ exports.main = async (event, context) => {
   app.router('postAttitude', postAttitude);
   app.router('postFavorite', postFavorite);
   app.router('postView', postView);
+  app.router('postDeleted', postDeleted);
+  app.router('postEditEssence', postEditEssence);
 
   app.router('commentCreate', commentCreate);
   app.router('commentList', commentList);

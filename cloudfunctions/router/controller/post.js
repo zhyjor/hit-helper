@@ -9,15 +9,31 @@ const postCreate = async (ctx, next) => {
       disableComment: false,
       isAnonymous: false,
       isDraft: false,
+      isDeleted: false,
     },
     // 添加用户的信息
     { OPENID: userInfo.OPENID, nickName: userInfo.nickName, avatarUrl: userInfo.avatarUrl },
     ctx._req.event.data
   );
-  let res = await add({
-    collect: 'post',
-    data: postInfo,
-  });
+  let res;
+  if (postInfo.id) {
+    // 获取信息
+    const currentPostInfo = await detailsById(postInfo.id);
+    const _postInfo = { ...currentPostInfo, ...postInfo };
+    res = await update({
+      collect: 'post',
+      data: _postInfo,
+      filter: {
+        id: _postInfo.id,
+      }
+    });
+  } else {
+    res = await add({
+      collect: 'post',
+      data: postInfo,
+    });
+  }
+
   ctx.body.data = res;
   await next(); // 执行下一中间件
 };
@@ -119,14 +135,17 @@ const postDetails = async (ctx, next) => {
 }
 
 const postList = async (ctx, next) => {
-  const { pageNo, pageSize, mine, favorite } = ctx._req.event.data;
+  const { pageNo, pageSize, mine, favorite, isEssence } = ctx._req.event.data;
   const filter = {};
 
+  // 精华帖
+  if(isEssence) filter.isEssence = isEssence;
   // 我的帖子
   if (mine) filter.OPENID = ctx.wxContext.OPENID;
   // 我的收藏
   if (favorite) filter['favoriteUserList.OPENID'] = ctx.wxContext.OPENID;
-
+  // 只查询未删除的帖子
+  filter.isDeleted = { '$in': [undefined, false] };
   let data = await findByPage({
     collect: 'post',
     filter,
@@ -141,5 +160,29 @@ const postList = async (ctx, next) => {
   await next(); // 执行下一中间件
 }
 
+// 软删除
+const postDeleted = async (ctx, next) => {
+  const { id } = ctx._req.event.data;
+  const res = await update({
+    collect: 'post', filter: { id }, data: {
+      isDeleted: true,
+    }
+  });
+  ctx.body.data = res;
+  await next(); // 执行下一中间件
+}
 
-module.exports = { postCreate, postList, postDetails, postAttitude, postFavorite, postView };
+// 加精/取消加精
+const postEditEssence = async (ctx, next) => {
+  const { id, isEssence } = ctx._req.event.data;
+  const res = await update({
+    collect: 'post', filter: { id }, data: {
+      isEssence,
+    }
+  });
+  ctx.body.data = res;
+  await next(); // 执行下一中间件
+}
+
+
+module.exports = { postCreate, postList, postDetails, postAttitude, postFavorite, postView, postDeleted, postEditEssence };

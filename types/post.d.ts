@@ -20,5 +20,7 @@ declare namespace Post {
     favorite: boolean; // 收藏
     favoriteUserList: Array<User.SimpleUserInfo>;
     viewCount: number;
+    isEssence?: boolean;
+    isDeleted?: boolean;
   }
 }

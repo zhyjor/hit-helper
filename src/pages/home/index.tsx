@@ -13,7 +13,7 @@ const App = () => {
           <PostList />
         </TabPane>
         <TabPane title="精华">
-          <PostList />
+          <PostList type="isEssence" />
         </TabPane>
         {/* <TabPane title="Tab 3"> Tab 3 </TabPane> */}
       </Tabs>

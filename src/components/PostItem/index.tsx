@@ -24,7 +24,7 @@ const PostItem: React.FC<IProps> = (props) => {
       <div className="cmpPostItemWrapper">
         <div className="cmpPostItemWrapperTitleWrapper">
           <span className="cmpPostItemWrapperTitle">{data.subject}</span>
-          {data.isExtract && (<Tag plain>精华</Tag>)}
+          {data.isEssence && (<Tag color="#FA685D" className="cmpPostItemWrapperTag">精华</Tag>)}
         </div>
         <div className="cmpPostItemWrapperFooterWrapper">
           <div className="cmpPostItemWrapperFooterLeft">

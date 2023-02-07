@@ -62,7 +62,7 @@ const Details: React.FC<IProps> = (props) => {
 
   const onLoadMoreHandler = async () => {
     if (listLoading || !hasMore) return;
-    const [e, data] = await fetchCommentList({ pageNo: pageNo + 1, pageSize: PAGESIZE, postId: id  });
+    const [e, data] = await fetchCommentList({ pageNo: pageNo + 1, pageSize: PAGESIZE, postId: id });
     if (data) {
       setHasMore(checkHasMore(data.pageNo, data.total));
       setPageNo(data.pageNo);
@@ -122,7 +122,16 @@ const Details: React.FC<IProps> = (props) => {
       </div>
       <div className="postDetailsHandler">
         {
-          data && (<Handler data={data} onAttitude={onPostHandler} onFavorite={onPostHandler} />)
+          data && (
+            <Handler
+              data={data}
+              onRefresh={() => {
+                run();
+                onRefreshHandler();
+              }}
+              onAttitude={onPostHandler}
+              onFavorite={onPostHandler}
+            />)
         }
       </div>
       <Loading visible={loadingVisible} />

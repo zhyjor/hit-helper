@@ -64,7 +64,7 @@ const Handler: React.FC<IProps> = (props) => {
         </Button>
       </div>
       <div>
-        <More />
+        <More onRefresh={onRefresh} data={data} />
       </div>
     </div>
   )
